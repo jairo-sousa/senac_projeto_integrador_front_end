@@ -5,7 +5,7 @@ import { BaseContentGroup } from "../components/base/BaseContentGroup.jsx";
 
 import { BaseButton } from "../components/base/BaseButton.jsx";
 import { HomeHeader } from "../components/home/HomeHeader.jsx";
-import { DayPhaseContent } from "../components/home/DayPhase.jsx";
+import { DayPhaseContent } from "../components/home/DayPhaseContent.jsx";
 import { BaseButtonSection } from "../components/base/BaseButtonSection.jsx";
 import { useEffect, useState } from "react";
 
@@ -13,13 +13,6 @@ import { schedulingBlank } from "../static/schedulings.js";
 import axios from "axios";
 import { API_URL } from "../main";
 import { dayPhases, getDayPhase } from "../static/dayPhases.js";
-import { BaseContent } from "../components/base/BaseContent.jsx";
-import { DayPhaseHeader } from "../components/home/DayPhaseHeader.jsx";
-import { BaseContentLine } from "../components/base/BaseContentLine.jsx";
-import { BaseContentCell } from "../components/base/BaseContentCell.jsx";
-
-import { dateStringToTime } from "../conversions/dateStringToTime.js";
-import { SchedulingCell } from "../components/home/SchedulingCell.jsx";
 
 export function Home() {
     // DATA
@@ -45,6 +38,7 @@ export function Home() {
     }, []);
 
     useEffect(() => {
+        console.log("schedulings antes de filtrar:", schedulings);
         if (schedulings && schedulings.length > 0) {
             setMorningSchedulings(
                 schedulings.filter(
@@ -73,20 +67,26 @@ export function Home() {
                 <HomeHeader />
 
                 <BaseContentGroup>
-                    <DayPhaseContent
-                        dayPhase={dayPhases.morning}
-                        schedulings={morningSchedulings}
-                    />
+                    {morningSchedulings && (
+                        <DayPhaseContent
+                            dayPhase={dayPhases.morning}
+                            schedulings={morningSchedulings}
+                        />
+                    )}
 
-                    <DayPhaseContent
-                        dayPhase={dayPhases.afternoon}
-                        schedulings={afternoonSchedulings}
-                    />
+                    {afternoonSchedulings && (
+                        <DayPhaseContent
+                            dayPhase={dayPhases.afternoon}
+                            schedulings={afternoonSchedulings}
+                        />
+                    )}
 
-                    <DayPhaseContent
-                        dayPhase={dayPhases.evening}
-                        schedulings={eveningSchedulings}
-                    />
+                    {eveningSchedulings && (
+                        <DayPhaseContent
+                            dayPhase={dayPhases.evening}
+                            schedulings={eveningSchedulings}
+                        />
+                    )}
                 </BaseContentGroup>
             </BaseMainSection>
 
