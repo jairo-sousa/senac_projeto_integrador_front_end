@@ -10,8 +10,8 @@ export function BaseButton({ parentOnclickCalback, children }) {
             fontWeight={"bold"}
             fontSize={"1.6rem"}
             borderRadius={"0.8rem"}
-            filter={"drop-shadow(0 0 0.4rem var(--content-brand-shadow));"}
             p={"0 2.1rem"}
+            filter={"drop-shadow(0 0 0.4rem var(--content-brand-shadow));"}
             onClick={parentOnclickCalback}
         >
             {children}

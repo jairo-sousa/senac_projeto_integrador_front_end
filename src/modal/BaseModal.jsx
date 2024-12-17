@@ -1,4 +1,6 @@
-import { Box, Flex, Text } from "@chakra-ui/react";
+import { Box, Button, Flex, Text } from "@chakra-ui/react";
+
+import { BaseModalRow } from "./BaseModalRow";
 
 export function BaseModal({ handleDisplayCallback, isOpen }) {
     return (
@@ -9,14 +11,37 @@ export function BaseModal({ handleDisplayCallback, isOpen }) {
             <BaseModalContainer>
                 <BaseModalHeader>
                     <BaseModalTitle>Novo Serviço</BaseModalTitle>
-                    <BaseModalCloseButon />
+                    <BaseModalCloseButon
+                        handleDisplayCallback={handleDisplayCallback}
+                    />
                 </BaseModalHeader>
+
+                <BaseModalBody>
+                    Lorem ipsum dolor sit amet consectetur
+                </BaseModalBody>
+
+                <BaseModalFooter>
+                    <BaseModalButton
+                        // onClickCallBack={}
+                        isModalAction={true}
+                    >
+                        Salvar
+                    </BaseModalButton>
+                    <BaseModalButton onClickCallBack={handleDisplayCallback}>
+                        Fechar
+                    </BaseModalButton>
+                </BaseModalFooter>
             </BaseModalContainer>
         </BaseModalWrapper>
     );
 }
 
 function BaseModalWrapper({ handleDisplayCallback, isOpen, children }) {
+    const handleWrapperClick = (event) => {
+        if (event.target === event.currentTarget) {
+            handleDisplayCallback();
+        }
+    };
     return (
         <Box
             w={"100%"}
@@ -38,15 +63,19 @@ function BaseModalWrapper({ handleDisplayCallback, isOpen, children }) {
 }
 
 function BaseModalContainer({ children }) {
+    const handleContainerClick = (event) => {
+        event.stopPropagation();
+    };
     return (
         <Box
             w={"fit-content"}
             h={"fit-content"}
             minW={"44.6rem"}
             minH={"17.4rem"}
-            padding={"0 2.4rem"}
+            px={"2.4rem"}
             bgColor={"var(--background-tertiary)"}
             borderRadius={"0.8rem"}
+            onClick={handleContainerClick}
         >
             {children}
         </Box>
@@ -54,22 +83,66 @@ function BaseModalContainer({ children }) {
 }
 
 function BaseModalHeader({ children }) {
-    return (
-        <Flex
-            w={"100%"}
-            h={"fit-content"}
-            justify={"space-between"}
-            p={"1.6rem 0"}
-        >
-            {children}
-        </Flex>
-    );
+    return <BaseModalRow>{children}</BaseModalRow>;
 }
 
 function BaseModalTitle({ children }) {
-    return <Text fontSize={"2rem"}>{children}</Text>;
+    return (
+        <Text fontSize={"2rem"} fontWeight={600}>
+            {children}
+        </Text>
+    );
 }
 
-function BaseModalCloseButon() {
-    return <Box as={"img"} src="/src/assets/cross.svg" h={"1.2rem"} />;
+function BaseModalCloseButon({ handleDisplayCallback }) {
+    return (
+        <Box
+            as={"img"}
+            src="/src/assets/cross.svg"
+            h={"1.2rem"}
+            onClick={handleDisplayCallback}
+        />
+    );
+}
+
+function BaseModalBody({ children }) {
+    return (
+        <BaseModalRow
+            customFontSize={"1.6rem"}
+            customFontWheight={400}
+            customPy={"0.8rem"}
+        >
+            {children}
+        </BaseModalRow>
+    );
+}
+
+function BaseModalFooter({ children }) {
+    return (
+        <BaseModalRow customGap={"2.8rem"} customJustfy={"end"}>
+            {children}
+        </BaseModalRow>
+    );
+}
+
+function BaseModalButton({ isModalAction, onClickCallBack, children }) {
+    return (
+        <Button
+            w={"fit-content"}
+            h={"4.406rem"}
+            bgColor={isModalAction ? "var(--content-brand)" : "#2e3334"}
+            color={
+                isModalAction
+                    ? "var(--content-brand-contrast)"
+                    : "var(--content-primary)"
+            }
+            fontWeight={"bold"}
+            fontSize={"1.55rem"}
+            borderRadius={"0.8rem"}
+            px={"1.6rem"}
+            onClick={onClickCallBack}
+        >
+            {children}
+        </Button>
+    );
 }

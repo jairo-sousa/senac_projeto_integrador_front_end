@@ -14,8 +14,9 @@ const newStyles = {
 
         // BACKGROUND
         "--background-primary": "#14151d",
-        "--background-seconday": "#23242C",
+        "--background-secondary": "#23242C",
         "--background-tertiary": "#2E2C30",
+        "--background-quaternary": "#1f2223",
 
         // BORDER
         "--border-primary": "#3E3C41",

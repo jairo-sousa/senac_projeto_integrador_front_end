@@ -76,7 +76,7 @@ export function Home() {
                 />
 
                 <BaseContentGroup>
-                    <p>{schedulings.length}</p>
+                    {/* <p>{schedulings.length}</p> */}
                     {Array.isArray(morningSchedulings) &&
                         morningSchedulings.length > 0 &&
                         schedulings.length > 0 && (

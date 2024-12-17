@@ -1,4 +1,4 @@
-import { Box, Flex } from "@chakra-ui/react";
+import { Box, Flex, Text } from "@chakra-ui/react";
 import { dateStringToTime } from "../../conversions/dateStringToTime";
 import { BaseContent } from "../base/BaseContent";
 import { BaseContentCell } from "../base/BaseContentCell";
@@ -36,7 +36,9 @@ export function DayPhaseContent({ schedulings, dayPhase }) {
                     ))}
 
                     <BaseContentCell isLastChild={true} toGrown={true}>
-                        <ActionsItems />
+                        <ActionsItems>
+                            <Text>{scheduling.status}</Text>
+                        </ActionsItems>
                     </BaseContentCell>
                 </BaseContentLine>
             ))}
@@ -44,9 +46,10 @@ export function DayPhaseContent({ schedulings, dayPhase }) {
     );
 }
 
-export function ActionsItems() {
+export function ActionsItems({ children }) {
     return (
-        <Flex gap={"3rem"} justify={"end"}>
+        <Flex gap={"3rem"} justify={"end"} fontSize={"1.2rem"} fontWeight={400}>
+            {children}
             <Box as={"img"} src="/src/assets/edit.svg" cursor={"pointer"} />
             <Box as={"img"} src="/src/assets/delete.svg" cursor={"pointer"} />
         </Flex>

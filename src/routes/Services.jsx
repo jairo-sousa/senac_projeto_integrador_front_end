@@ -14,13 +14,13 @@ import { BasePageBody } from "../components/base/BasePageBody";
 import { BaseTableCell } from "../components/base/BaseTableCell";
 import { Flex, Image } from "@chakra-ui/react";
 
-import { BaseModal } from "../modal/BaseModal";
 import { useEffect, useState } from "react";
-import { serviceBlank } from "../static/serviceBlank";
+
+import { BaseModal } from "../modal/BaseModal";
 
 export function Services() {
     // DATA
-    const [services, setServices] = useState(serviceBlank);
+    const [services, setServices] = useState([]);
 
     const getAllServices = () => {
         axios

@@ -1,4 +1,3 @@
-import { clientBlank } from "../static/clientBlank";
 import { API_URL } from "../main";
 
 import { BasePageBody } from "../components/base/BasePageBody";
@@ -17,7 +16,7 @@ import axios from "axios";
 
 export function Clients() {
     // DATA
-    const [clients, setClients] = useState(clientBlank);
+    const [clients, setClients] = useState([]);
 
     const getAllClients = () => {
         axios
