@@ -1,18 +1,11 @@
 import { Flex, Image, Input } from "@chakra-ui/react";
 import { useState } from "react";
 
-export function DatePicker() {
-    const today = new Date();
-
-    const [selectedDate, setSelectedDate] = useState(
-        `${today.getFullYear()}-${(today.getMonth() + 1)
-            .toString()
-            .padStart(2, "0")}-${today.getDate().toString().padStart(2, "0")}`
-    );
-
+export function DatePicker({ selectedDate, onDateChange }) {
     const handleDateChange = (event) => {
-        setSelectedDate(event.target.value);
+        onDateChange(event.target.value);
     };
+
     return (
         <DatePickerBody>
             <Image src="/src/assets/calendar.svg" h={"1.9rem"} />
