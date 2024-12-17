@@ -1,0 +1,26 @@
+/* BACKUP */
+:root {
+    font-size: 62.5%;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-size: 1.6rem;
+}
+
+body {
+    height: 100vh;
+
+    background-color: #14151d;
+    color: #fff;
+    font-weight: bold;
+}
+
+body #root {
+    height: 100%;
+    width: 100%;
+
+    display: flex;
+}
