@@ -35,7 +35,7 @@ export const clientFields = [
     {
         name: "Data de nascimento",
         id: "birthdate",
-        type: "text",
+        type: "date",
     },
     {
         name: "Rua",
@@ -44,7 +44,7 @@ export const clientFields = [
     },
     {
         name: "Bairro",
-        id: "neigborhood",
+        id: "neighborhood",
         type: "text",
     },
     {
@@ -63,21 +63,27 @@ export const schedulingFields = [
     {
         name: "Cliente",
         id: "client",
-        type: "text",
+        type: "select",
     },
     {
         name: "Serviços",
         id: "service",
-        type: "text",
+        type: "select",
     },
     {
         name: "Horário",
         id: "time",
-        type: "text",
+        type: "time",
     },
     {
         name: "Data",
         id: "date",
+        type: "date",
+    },
+    {
+        name: "Status",
+        id: "status",
         type: "text",
+        defaultValue: "pendente",
     },
 ];

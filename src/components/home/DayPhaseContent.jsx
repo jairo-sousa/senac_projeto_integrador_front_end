@@ -5,8 +5,14 @@ import { BaseContentCell } from "../base/BaseContentCell";
 import { BaseContentLine } from "../base/BaseContentLine";
 import { DayPhaseHeader } from "./DayPhaseHeader";
 import { SchedulingCell } from "./SchedulingCell";
+import { ActionsItems } from "../../routes/Services";
 
-export function DayPhaseContent({ schedulings, dayPhase }) {
+export function DayPhaseContent({
+    editCallback,
+    deleteCallback,
+    schedulings,
+    dayPhase,
+}) {
     return (
         <BaseContent>
             <DayPhaseHeader dayPhase={dayPhase} />
@@ -36,7 +42,11 @@ export function DayPhaseContent({ schedulings, dayPhase }) {
                     ))}
 
                     <BaseContentCell isLastChild={true} toGrown={true}>
-                        <ActionsItems>
+                        <ActionsItems
+                            modelId={scheduling.id}
+                            editCallback={editCallback}
+                            deleteCallback={deleteCallback}
+                        >
                             <Text>{scheduling.status}</Text>
                         </ActionsItems>
                     </BaseContentCell>
@@ -46,12 +56,12 @@ export function DayPhaseContent({ schedulings, dayPhase }) {
     );
 }
 
-export function ActionsItems({ children }) {
-    return (
-        <Flex gap={"3rem"} justify={"end"} fontSize={"1.2rem"} fontWeight={400}>
-            {children}
-            <Box as={"img"} src="/src/assets/edit.svg" cursor={"pointer"} />
-            <Box as={"img"} src="/src/assets/delete.svg" cursor={"pointer"} />
-        </Flex>
-    );
-}
+// function ActionsItems({ children }) {
+//     return (
+//         <Flex gap={"3rem"} justify={"end"} fontSize={"1.2rem"} fontWeight={400}>
+//             {children}
+//             <Box as={"img"} src="/src/assets/edit.svg" cursor={"pointer"} />
+//             <Box as={"img"} src="/src/assets/delete.svg" cursor={"pointer"} />
+//         </Flex>
+//     );
+// }

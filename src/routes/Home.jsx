@@ -7,11 +7,17 @@ import { BaseButton } from "../components/base/BaseButton.jsx";
 import { HomeHeader } from "../components/home/HomeHeader.jsx";
 import { DayPhaseContent } from "../components/home/DayPhaseContent.jsx";
 import { BaseButtonSection } from "../components/base/BaseButtonSection.jsx";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import axios from "axios";
 import { API_URL } from "../main";
 import { dayPhases, getDayPhase } from "../static/dayPhases.js";
+import { BaseModal } from "../modal/BaseModal.jsx";
+import { schedulingFields } from "../static/modelFields.js";
+import { BaseModalRow } from "../modal/BaseModalRow.jsx";
+import { BaseModalInput } from "../modal/BaseModalInput.jsx";
+import { Box } from "@chakra-ui/react";
+// import React from "react";
 
 export function Home() {
     // DATE
@@ -21,12 +27,18 @@ export function Home() {
         setSelectedDate(newDate);
     };
 
-    // DATA
+    // DATA GET
     const [schedulings, setSchedulings] = useState([]);
+    const [clients, setClients] = useState([]);
+    const [services, setServices] = useState([]);
+    const [selectedServices, setSelectedServices] = useState([]);
+    const [updatingScheduling, setUpdatingScheduling] = useState(null);
 
     const [morningSchedulings, setMorningSchedulings] = useState([]);
     const [afternoonSchedulings, setAfternoonSchedulings] = useState([]);
     const [eveningSchedulings, setEveningSchedulings] = useState([]);
+
+    const inputRefs = useRef([]);
 
     const getAllSchedulings = (date) => {
         axios
@@ -37,6 +49,49 @@ export function Home() {
             .catch((err) => {
                 console.log(err);
             });
+    };
+
+    const getSchedulingsById = (id) => {
+        axios
+            .get(`${API_URL}/scheduling/${id}`)
+            .then((res) => {
+                setUpdatingScheduling({
+                    id: res.data.id,
+                });
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    };
+
+    const getClients = () => {
+        axios
+            .get(`${API_URL}/client/view-names`)
+            .then((res) => {
+                setClients(res.data);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    };
+
+    const getServices = () => {
+        axios
+            .get(`${API_URL}/service/view-names`)
+            .then((res) => {
+                setServices(res.data);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    };
+
+    const cleanInputs = () => {
+        inputRefs.current.map((input) => {
+            if (input.type === "text" || input.type === "password") {
+                input.value = "";
+            }
+        });
     };
 
     useEffect(() => {
@@ -67,6 +122,82 @@ export function Home() {
         }
     }, [selectedDate, schedulings]);
 
+    useEffect(() => {
+        // handleSave();
+    }, [updatingScheduling]);
+
+    // DATA POST
+    const handleSave = (data) => {
+        const updatedData = {
+            date: `${data.date}T${data.time}:00z`,
+            status: "Pendente",
+            clientName: data.client,
+            services: selectedServices.map((service) => service.id),
+        };
+
+        if (updatingScheduling) {
+            axios
+                .put(
+                    `${API_URL}/scheduling/${updatingScheduling.id}`,
+                    updatedData
+                )
+                .then((response) => {
+                    console.log(
+                        "Agendamento atualizado com sucesso:",
+                        response.data
+                    );
+                    setUpdatingScheduling(null);
+                    getAllSchedulings(selectedDate);
+                    handleModalDisplay();
+                })
+                .catch((error) => {
+                    console.error("Erro ao atualizar Agendamento:", error);
+                    handleModalDisplay();
+                });
+        } else {
+            axios
+                .post(`${API_URL}/scheduling`, updatedData)
+                .then((response) => {
+                    console.log(
+                        "Agendamento criado com sucesso:",
+                        response.data
+                    );
+                    getAllSchedulings(selectedDate);
+                    handleModalDisplay();
+                })
+                .catch((error) => {
+                    console.error("Erro ao cadastrar Agendamento:", error);
+                    handleModalDisplay();
+                });
+        }
+    };
+
+    // DATA PUT
+    const handleUpdate = (id) => {
+        handleModalDisplay();
+        getSchedulingsById(id);
+    };
+
+    // DATA DELETE
+    const handleDelete = (id) => {
+        axios
+            .delete(`${API_URL}/scheduling/${id}`)
+            .then((response) => {
+                console.log("agendamento removido com sucesso:");
+                getAllSchedulings(selectedDate);
+            })
+            .catch((error) => {
+                console.error("Erro ao remover agendamento:", error);
+            });
+    };
+
+    // MODAL
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const handleModalDisplay = () => {
+        setIsModalOpen(!isModalOpen);
+    };
+
     return (
         <BasePageBody>
             <BaseMainSection>
@@ -76,11 +207,18 @@ export function Home() {
                 />
 
                 <BaseContentGroup>
-                    {/* <p>{schedulings.length}</p> */}
                     {Array.isArray(morningSchedulings) &&
                         morningSchedulings.length > 0 &&
                         schedulings.length > 0 && (
                             <DayPhaseContent
+                                deleteCallback={handleDelete}
+                                editCallback={() => {
+                                    cleanInputs();
+                                    getClients();
+                                    getServices();
+                                    handleModalDisplay();
+                                    handleUpdate;
+                                }}
                                 key={`morning-${selectedDate}`}
                                 dayPhase={dayPhases.morning}
                                 schedulings={morningSchedulings}
@@ -91,6 +229,14 @@ export function Home() {
                         afternoonSchedulings.length > 0 &&
                         schedulings.length > 0 && (
                             <DayPhaseContent
+                                deleteCallback={handleDelete}
+                                editCallback={() => {
+                                    cleanInputs();
+                                    getClients();
+                                    getServices();
+                                    handleModalDisplay();
+                                    handleUpdate;
+                                }}
                                 key={`afternoon-${selectedDate}`}
                                 dayPhase={dayPhases.afternoon}
                                 schedulings={afternoonSchedulings}
@@ -101,6 +247,14 @@ export function Home() {
                         eveningSchedulings.length > 0 &&
                         schedulings.length > 0 && (
                             <DayPhaseContent
+                                deleteCallback={handleDelete}
+                                editCallback={() => {
+                                    cleanInputs();
+                                    getClients();
+                                    getServices();
+                                    handleModalDisplay();
+                                    handleUpdate;
+                                }}
                                 key={`evening-${selectedDate}`}
                                 dayPhase={dayPhases.evening}
                                 schedulings={eveningSchedulings}
@@ -110,7 +264,133 @@ export function Home() {
             </BaseMainSection>
 
             <BaseButtonSection>
-                <BaseButton>NOVO AGENDAMENTO</BaseButton>
+                <BaseModal
+                    isOpen={isModalOpen}
+                    title={"Novo Agendamento"}
+                    handleDisplayCallback={handleModalDisplay}
+                    handleSaveCallback={handleSave}
+                    inputRefs={inputRefs}
+                >
+                    {schedulingFields.map((field, index) => (
+                        <BaseModalRow key={field.id} customPy={"0"}>
+                            <BaseModalInput
+                                name={field.name}
+                                id={field.id}
+                                customType={field.type}
+                                ref={(el) => (inputRefs.current[index] = el)}
+                                onchangeCalback={(e) => {
+                                    const selectedService = services.find(
+                                        (service) =>
+                                            service.name === e.target.value
+                                    );
+                                    if (selectedService) {
+                                        const serviceExists =
+                                            selectedServices.some(
+                                                (service) =>
+                                                    service.id ===
+                                                    selectedService.id
+                                            );
+
+                                        if (!serviceExists) {
+                                            setSelectedServices(
+                                                (prevSelectedServices) => [
+                                                    ...prevSelectedServices,
+                                                    selectedService,
+                                                ]
+                                            );
+                                        }
+                                    }
+                                }}
+                            >
+                                {field.type === "select" && (
+                                    <Box
+                                        as={"option"}
+                                        bgColor={"inherit"}
+                                        fontSize={"inherit"}
+                                        lineHeight={"4rem"}
+                                        value={0}
+                                    >
+                                        {`Escolha ${field.name}`}
+                                    </Box>
+                                )}
+
+                                {field.type === "select" &&
+                                    field.id === "client" &&
+                                    clients?.map((client) => (
+                                        <Box
+                                            key={client.id}
+                                            as={"option"}
+                                            bgColor={"inherit"}
+                                            fontSize={"inherit"}
+                                            lineHeight={"4rem"}
+                                            value={client.name}
+                                        >
+                                            {client.name}
+                                        </Box>
+                                    ))}
+
+                                {field.type === "select" &&
+                                    field.id === "service" &&
+                                    services?.map((service) => (
+                                        <Box
+                                            key={service.id}
+                                            as={"option"}
+                                            bgColor={"inherit"}
+                                            fontSize={"inherit"}
+                                            lineHeight={"4rem"}
+                                            value={service.name}
+                                        >
+                                            {service.name}
+                                        </Box>
+                                    ))}
+                            </BaseModalInput>
+                        </BaseModalRow>
+                    ))}
+
+                    {selectedServices.length > 0 && (
+                        <>
+                            <Box as={"label"} fontWeight={500}>
+                                Serviços selecionados
+                            </Box>
+                            {selectedServices.map((service) => (
+                                <BaseModalRow
+                                    key={`${
+                                        service.name
+                                    } ${selectedServices.indexOf(service)} `}
+                                    customPy={"0"}
+                                >
+                                    {service.name}
+                                    <Box
+                                        as={"img"}
+                                        src="/src/assets/cross.svg"
+                                        h={"1.2rem"}
+                                        id={service.id}
+                                        onClick={() => {
+                                            setSelectedServices(
+                                                (prevSelectedServices) =>
+                                                    prevSelectedServices.filter(
+                                                        (selectedService) =>
+                                                            selectedService.id !==
+                                                            service.id
+                                                    )
+                                            );
+                                        }}
+                                    />
+                                </BaseModalRow>
+                            ))}
+                        </>
+                    )}
+                </BaseModal>
+                <BaseButton
+                    parentOnclickCalback={() => {
+                        cleanInputs();
+                        getClients();
+                        getServices();
+                        handleModalDisplay();
+                    }}
+                >
+                    NOVO AGENDAMENTO
+                </BaseButton>
             </BaseButtonSection>
         </BasePageBody>
     );

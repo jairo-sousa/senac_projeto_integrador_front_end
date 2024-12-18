@@ -89,12 +89,23 @@ function BaseModalContainer({ children }) {
         <Box
             w={"fit-content"}
             h={"fit-content"}
+            maxH={"85vh"}
             minW={"44.6rem"}
             minH={"17.4rem"}
             px={"2.4rem"}
             bgColor={"var(--background-tertiary)"}
             borderRadius={"0.8rem"}
             onClick={handleContainerClick}
+            overflowY={"scroll"}
+            scrollbarWidth={"none"}
+            css={{
+                "&::-webkit-scrollbar": {
+                    display: "none",
+                },
+                "&": {
+                    msOverflowStyle: "none",
+                },
+            }}
         >
             {children}
         </Box>

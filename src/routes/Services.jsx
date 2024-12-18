@@ -247,7 +247,7 @@ function ServiceHeader() {
     );
 }
 
-function ActionsItems({ modelId, editCallback, deleteCallback }) {
+export function ActionsItems({ modelId, editCallback, deleteCallback }) {
     return (
         <Flex gap={"3rem"} justify={"end"}>
             <Image

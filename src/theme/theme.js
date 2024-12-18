@@ -49,6 +49,12 @@ const newStyles = {
         fontSize: "1.4rem",
         flex: 1,
     },
+    select: {
+        outline: "none",
+    },
+    option: {
+        height: "inherit",
+    },
     "::placeholder": {
         color: "var(--content-secondary)",
         opacity: 1,
