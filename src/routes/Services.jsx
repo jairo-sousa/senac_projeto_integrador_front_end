@@ -12,15 +12,39 @@ import { BaseHeader } from "../components/base/BaseHeader";
 import { BaseMainSection } from "../components/base/BaseMainSection";
 import { BasePageBody } from "../components/base/BasePageBody";
 import { BaseTableCell } from "../components/base/BaseTableCell";
-import { Flex, Image } from "@chakra-ui/react";
+import { Flex, Image, Text } from "@chakra-ui/react";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { BaseModal } from "../modal/BaseModal";
+import { serviceFields } from "../static/modelFields";
+import { BaseModalRow } from "../modal/BaseModalRow";
+import { BaseModalInput } from "../modal/BaseModalInput";
 
 export function Services() {
-    // DATA
+    // DATA GET
     const [services, setServices] = useState([]);
+    const [updatingService, setUpdatingService] = useState(null);
+
+    const inputRefs = useRef([]);
+
+    useEffect(() => {
+        getAllServices();
+    }, []);
+
+    useEffect(() => {
+        if (updatingService) {
+            inputRefs.current.map((input) => {
+                input.value = updatingService[`${input.id}`];
+            });
+        }
+    }, [updatingService]);
+
+    const cleanInputs = () => {
+        inputRefs.current.map((input) => {
+            input.value = "";
+        });
+    };
 
     const getAllServices = () => {
         axios
@@ -33,9 +57,92 @@ export function Services() {
             });
     };
 
-    useEffect(() => {
-        getAllServices();
-    }, []);
+    const getServiceById = (id) => {
+        axios
+            .get(`${API_URL}/service/${id}`)
+            .then((res) => {
+                setUpdatingService(res.data);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    };
+
+    // DATA POST
+    const handleSave = (data) => {
+        const updatedData = {};
+
+        Object.keys(data).forEach((key) => {
+            const value = data[key];
+            const input = serviceFields.find((field) => field.id === key);
+
+            if (input) {
+                if (input.type === "number") {
+                    updatedData[key] = isNaN(value) ? value : parseFloat(value);
+                } else {
+                    updatedData[key] = value;
+                }
+            }
+        });
+
+        if (updatingService) {
+            axios
+                .put(`${API_URL}/service/${updatingService.id}`, updatedData)
+                .then((response) => {
+                    console.log(
+                        "Serviço atualizado com sucesso:",
+                        response.data
+                    );
+                    setServices((prevServices) =>
+                        prevServices.map((service) =>
+                            service.id === updatingService.id
+                                ? response.data
+                                : service
+                        )
+                    );
+                    setUpdatingService(null);
+                    handleModalDisplay();
+                })
+                .catch((error) => {
+                    console.error("Erro ao atualizar serviço:", error);
+                    handleModalDisplay();
+                });
+        } else {
+            axios
+                .post(`${API_URL}/service`, updatedData)
+                .then((response) => {
+                    console.log("Serviço criado com sucesso:", response.data);
+                    setServices((prevServices) => [
+                        ...prevServices,
+                        response.data,
+                    ]);
+                    handleModalDisplay();
+                })
+                .catch((error) => {
+                    console.error("Erro ao criar serviço:", error);
+                    handleModalDisplay();
+                });
+        }
+    };
+
+    // DATA PUT
+    const handleUpdate = (id) => {
+        handleModalDisplay();
+        getServiceById(id);
+    };
+
+    // DATA DELETE
+    const handleDelete = (id) => {
+        axios
+            .delete(`${API_URL}/service/${id}`)
+            .then((response) => {
+                console.log("Serviço removido com sucesso:");
+                getAllServices();
+            })
+            .catch((error) => {
+                console.error("Erro ao remover serviço:", error);
+            });
+    };
 
     // MODAL
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -82,7 +189,13 @@ export function Services() {
                                     </BaseTableCell>
                                 ))}
                                 <BaseTableCell isLastChild={true}>
-                                    {service.id != null && <ActionsItems />}
+                                    {service.id != null && (
+                                        <ActionsItems
+                                            modelId={service.id}
+                                            editCallback={handleUpdate}
+                                            deleteCallback={handleDelete}
+                                        />
+                                    )}
                                 </BaseTableCell>
                             </BaseContentLine>
                         ))}
@@ -93,9 +206,29 @@ export function Services() {
             <BaseButtonSection>
                 <BaseModal
                     isOpen={isModalOpen}
+                    title={"Novo Serviço"}
                     handleDisplayCallback={handleModalDisplay}
-                />
-                <BaseButton parentOnclickCalback={handleModalDisplay}>
+                    handleSaveCallback={handleSave}
+                    inputRefs={inputRefs}
+                >
+                    {serviceFields.map((field, index) => (
+                        <BaseModalRow key={field.id} customPy={"0"}>
+                            <BaseModalInput
+                                name={field.name}
+                                id={field.id}
+                                customType={field.type}
+                                ref={(el) => (inputRefs.current[index] = el)}
+                            />
+                        </BaseModalRow>
+                    ))}
+                </BaseModal>
+
+                <BaseButton
+                    parentOnclickCalback={() => {
+                        cleanInputs();
+                        handleModalDisplay();
+                    }}
+                >
                     NOVO SERVIÇO
                 </BaseButton>
             </BaseButtonSection>
@@ -114,11 +247,23 @@ function ServiceHeader() {
     );
 }
 
-function ActionsItems() {
+function ActionsItems({ modelId, editCallback, deleteCallback }) {
     return (
         <Flex gap={"3rem"} justify={"end"}>
-            <Image src="/src/assets/edit.svg" cursor={"pointer"} />
-            <Image src="/src/assets/delete.svg" cursor={"pointer"} />
+            <Image
+                src="/src/assets/edit.svg"
+                cursor={"pointer"}
+                onClick={() => {
+                    editCallback(modelId);
+                }}
+            />
+            <Image
+                src="/src/assets/delete.svg"
+                cursor={"pointer"}
+                onClick={() => {
+                    deleteCallback(modelId);
+                }}
+            />
         </Flex>
     );
 }

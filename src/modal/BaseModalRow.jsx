@@ -6,6 +6,7 @@ export function BaseModalRow({
     customFontWheight,
     customPy,
     customGap,
+    customDirection,
     children,
 }) {
     return (
@@ -18,6 +19,7 @@ export function BaseModalRow({
             fontSize={customFontSize}
             fontWeight={customFontWheight}
             gap={customGap}
+            direction={customDirection}
         >
             {children}
         </Flex>

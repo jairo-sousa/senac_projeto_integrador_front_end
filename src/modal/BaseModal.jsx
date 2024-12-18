@@ -1,8 +1,29 @@
 import { Box, Button, Flex, Text } from "@chakra-ui/react";
 
 import { BaseModalRow } from "./BaseModalRow";
+import { useRef } from "react";
 
-export function BaseModal({ handleDisplayCallback, isOpen }) {
+export function BaseModal({
+    handleDisplayCallback,
+    handleSaveCallback,
+    inputRefs,
+    isOpen,
+    title,
+    children,
+}) {
+    function getInputValues() {
+        const data = {};
+
+        inputRefs.current.forEach((input, index) => {
+            if (input) {
+                data[input.id] = input.value;
+                input.value = "";
+            }
+        });
+
+        handleSaveCallback(data);
+    }
+
     return (
         <BaseModalWrapper
             isOpen={isOpen}
@@ -10,25 +31,23 @@ export function BaseModal({ handleDisplayCallback, isOpen }) {
         >
             <BaseModalContainer>
                 <BaseModalHeader>
-                    <BaseModalTitle>Novo Serviço</BaseModalTitle>
+                    <BaseModalTitle>{title}</BaseModalTitle>
                     <BaseModalCloseButon
                         handleDisplayCallback={handleDisplayCallback}
                     />
                 </BaseModalHeader>
 
-                <BaseModalBody>
-                    Lorem ipsum dolor sit amet consectetur
-                </BaseModalBody>
+                <BaseModalBody>{children}</BaseModalBody>
 
                 <BaseModalFooter>
                     <BaseModalButton
-                        // onClickCallBack={}
+                        onClickCallBack={getInputValues}
                         isModalAction={true}
                     >
                         Salvar
                     </BaseModalButton>
                     <BaseModalButton onClickCallBack={handleDisplayCallback}>
-                        Fechar
+                        Cancelar
                     </BaseModalButton>
                 </BaseModalFooter>
             </BaseModalContainer>
@@ -55,7 +74,7 @@ function BaseModalWrapper({ handleDisplayCallback, isOpen, children }) {
             onClick={handleDisplayCallback}
             display={isOpen ? "flex" : "none"}
             justifyContent={"center"}
-            alignItems={"center"}
+            pt={"6.4rem"}
         >
             {children}
         </Box>
@@ -107,13 +126,16 @@ function BaseModalCloseButon({ handleDisplayCallback }) {
 
 function BaseModalBody({ children }) {
     return (
-        <BaseModalRow
-            customFontSize={"1.6rem"}
-            customFontWheight={400}
-            customPy={"0.8rem"}
+        <Flex
+            w={"100%"}
+            h={"fit-content"}
+            justify={"space-between"}
+            py={"0.8rem 2.4rem"}
+            direction={"column"}
+            gap={"1.6rem"}
         >
             {children}
-        </BaseModalRow>
+        </Flex>
     );
 }
 

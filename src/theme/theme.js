@@ -49,6 +49,15 @@ const newStyles = {
         fontSize: "1.4rem",
         flex: 1,
     },
+    "::placeholder": {
+        color: "var(--content-secondary)",
+        opacity: 1,
+    },
+
+    "::-ms-input-placeholder": {
+        color: "var(--content-secondary)",
+        opacity: 1,
+    },
 };
 
 Object.assign(system._config.globalCss, newStyles);
