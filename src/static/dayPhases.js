@@ -17,7 +17,9 @@ export const dayPhases = {
 };
 
 export const getDayPhase = (date) => {
-    const hour = new Date(date).getHours();
+    const [datePart, timePart] = date.split("T");
+
+    const hour = parseInt(timePart.split(":")[0]);
 
     if (hour >= 6 && hour < 12) {
         return dayPhases.morning;

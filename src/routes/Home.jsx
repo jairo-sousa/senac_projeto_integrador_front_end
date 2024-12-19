@@ -51,6 +51,17 @@ export function Home() {
             });
     };
 
+    const getScheduling = (id) => {
+        axios
+            .get(`${API_URL}/scheduling/${id}`)
+            .then((res) => {
+                setUpdatingScheduling(res.data);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    };
+
     const getClients = () => {
         axios
             .get(`${API_URL}/client/view-names`)
@@ -78,6 +89,58 @@ export function Home() {
             if (input.type === "text" || input.type === "password") {
                 input.value = "";
             }
+            if (input.id === "client" || input.id === "service") {
+                input.value = 0;
+            }
+            if (input.id === "time") {
+                input.value = "00:00";
+            }
+            if (input.id === "date") {
+                input.value = selectedDate;
+            }
+            if (input.id === "status") {
+                input.value = "Pendente";
+            }
+
+            setSelectedServices([]);
+        });
+    };
+
+    const setInputs = () => {
+        setSelectedServices([]);
+        inputRefs.current.map((input) => {
+            if (input.id === "client") {
+                const client = clients.filter(
+                    (client) => client.id === updatingScheduling.clientId
+                );
+                input.value = client[0].name;
+            }
+            if (input.id === "service") {
+                input.value = 0;
+                updatingScheduling?.services.forEach((service) => {
+                    setSelectedServices((prevServices) => [
+                        ...prevServices,
+                        {
+                            id: service.id,
+                            name: service.name,
+                        },
+                    ]);
+                });
+            }
+
+            if (input.id === "time") {
+                input.value = updatingScheduling.date
+                    ?.split("T")[1]
+                    ?.split(":")
+                    .slice(0, 2)
+                    .join(":");
+            }
+            if (input.id === "date") {
+                input.value = selectedDate;
+            }
+            if (input.id === "status") {
+                input.value = "Pendente";
+            }
         });
     };
 
@@ -85,6 +148,12 @@ export function Home() {
         const date = selectedDate;
         getAllSchedulings(date);
     }, [selectedDate]);
+
+    useEffect(() => {
+        if (updatingScheduling) {
+            setInputs();
+        }
+    }, [updatingScheduling]);
 
     useEffect(() => {
         if (schedulings && schedulings.length > 0) {
@@ -111,7 +180,7 @@ export function Home() {
 
     // DATA POST
     const handleSave = (data) => {
-        console.log(data);
+        // console.log(data);
 
         const updatedData = {
             date: `${data.date}T${data.time}:00z`,
@@ -160,12 +229,9 @@ export function Home() {
     // DATA PUT
     const handleUpdate = (id) => {
         handleModalDisplay();
-        cleanInputs();
         getClients();
         getServices();
-        setUpdatingScheduling({
-            id,
-        });
+        getScheduling(id);
     };
 
     // DATA DELETE
