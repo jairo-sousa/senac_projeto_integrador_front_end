@@ -44,7 +44,9 @@ export function DayPhaseContent({
                     <BaseContentCell isLastChild={true} toGrown={true}>
                         <ActionsItems
                             modelId={scheduling.id}
-                            editCallback={editCallback}
+                            editCallback={() => {
+                                editCallback(scheduling.id);
+                            }}
                             deleteCallback={deleteCallback}
                         >
                             <Text>{scheduling.status}</Text>

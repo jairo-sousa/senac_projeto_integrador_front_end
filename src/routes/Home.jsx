@@ -51,19 +51,6 @@ export function Home() {
             });
     };
 
-    const getSchedulingsById = (id) => {
-        axios
-            .get(`${API_URL}/scheduling/${id}`)
-            .then((res) => {
-                setUpdatingScheduling({
-                    id: res.data.id,
-                });
-            })
-            .catch((err) => {
-                console.log(err);
-            });
-    };
-
     const getClients = () => {
         axios
             .get(`${API_URL}/client/view-names`)
@@ -122,12 +109,10 @@ export function Home() {
         }
     }, [selectedDate, schedulings]);
 
-    useEffect(() => {
-        // handleSave();
-    }, [updatingScheduling]);
-
     // DATA POST
     const handleSave = (data) => {
+        console.log(data);
+
         const updatedData = {
             date: `${data.date}T${data.time}:00z`,
             status: "Pendente",
@@ -175,7 +160,12 @@ export function Home() {
     // DATA PUT
     const handleUpdate = (id) => {
         handleModalDisplay();
-        getSchedulingsById(id);
+        cleanInputs();
+        getClients();
+        getServices();
+        setUpdatingScheduling({
+            id,
+        });
     };
 
     // DATA DELETE
@@ -212,13 +202,7 @@ export function Home() {
                         schedulings.length > 0 && (
                             <DayPhaseContent
                                 deleteCallback={handleDelete}
-                                editCallback={() => {
-                                    cleanInputs();
-                                    getClients();
-                                    getServices();
-                                    handleModalDisplay();
-                                    handleUpdate;
-                                }}
+                                editCallback={handleUpdate}
                                 key={`morning-${selectedDate}`}
                                 dayPhase={dayPhases.morning}
                                 schedulings={morningSchedulings}
@@ -230,13 +214,7 @@ export function Home() {
                         schedulings.length > 0 && (
                             <DayPhaseContent
                                 deleteCallback={handleDelete}
-                                editCallback={() => {
-                                    cleanInputs();
-                                    getClients();
-                                    getServices();
-                                    handleModalDisplay();
-                                    handleUpdate;
-                                }}
+                                editCallback={handleUpdate}
                                 key={`afternoon-${selectedDate}`}
                                 dayPhase={dayPhases.afternoon}
                                 schedulings={afternoonSchedulings}
@@ -248,13 +226,7 @@ export function Home() {
                         schedulings.length > 0 && (
                             <DayPhaseContent
                                 deleteCallback={handleDelete}
-                                editCallback={() => {
-                                    cleanInputs();
-                                    getClients();
-                                    getServices();
-                                    handleModalDisplay();
-                                    handleUpdate;
-                                }}
+                                editCallback={handleUpdate}
                                 key={`evening-${selectedDate}`}
                                 dayPhase={dayPhases.evening}
                                 schedulings={eveningSchedulings}
