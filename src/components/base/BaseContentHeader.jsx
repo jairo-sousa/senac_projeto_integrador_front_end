@@ -6,7 +6,7 @@ export function BaseContentHeader({ children }) {
             <Flex
                 gap={"1.2rem"}
                 align={"start"}
-                paddingBottom={"1.2rem"}
+                paddingBottom={"1.5rem"}
                 px={"2rem"}
             >
                 {children}

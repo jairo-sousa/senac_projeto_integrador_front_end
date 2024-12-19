@@ -10,11 +10,11 @@ export function BaseContentCell({
 }) {
     return (
         <Box
-            fontSize={"1.2rem"}
-            fontWeight={light && 400}
-            w={customWidth || "4.5rem"}
+            fontSize={"2rem"}
+            fontWeight={light && 500}
+            w={customWidth || "6rem"}
             minH={"fit-content"}
-            color={secondaryColor && "var(--content-secondary)"}
+            color={secondaryColor && "var(--content-tertiary)"}
             textAlign={isLastChild && "end"}
             flex={toGrown && 1}
         >
