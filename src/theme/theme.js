@@ -21,7 +21,7 @@ const newStyles = {
 
         // BORDER
         "--border-primary": "#3E3C41",
-        "--border-divisor": "#2E2C30",
+        "--border-divisor": "#f9c8c5",
     },
     "*": {
         margin: 0,
