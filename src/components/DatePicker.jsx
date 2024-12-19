@@ -18,13 +18,14 @@ function DatePickerBody({ children }) {
     return (
         <Flex
             position={"relative"}
-            h={"4.8rem"}
+            h={"100%"}
+            w={"27rem"}
             justify={"space-between"}
             align={"center"}
             gap={"0.8rem"}
-            border={"1px solid var(--border-primary)"}
+            backgroundColor={"var(--background-tertiary)"}
             borderRadius={"0.8rem"}
-            p={"1.2rem 1.2rem 1.2rem 1.6rem"}
+            p={"0 1.2rem 0 2rem"}
         >
             {children}
         </Flex>
@@ -37,14 +38,16 @@ function DatePickerInput({ value, onChange }) {
             type="date"
             border={"none"}
             outline={"none"}
-            w={"13.5rem"}
-            fontSize={"1.6rem"}
-            fontWeight={400}
+            w={"auto"}
+            minWidth={"fit-content"}
+            height={"fit-content"}
+            lineHeight={"normal"}
+            fontSize={"3rem"}
+            fontWeight={500}
             color={"var(--content-seconday)"}
             background={"url(/src/assets/drop_down_arrow.svg)"}
             backgroundRepeat={"no-repeat"}
-            backgroundPosition={"95%"}
-            padding={0}
+            backgroundPosition={"70%"}
             position={"relative"}
             css={{
                 "&::-webkit-calendar-picker-indicator": {
