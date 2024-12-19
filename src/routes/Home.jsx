@@ -426,9 +426,7 @@ export function Home() {
                         getServices();
                         handleModalDisplay();
                     }}
-                >
-                    NOVO AGENDAMENTO
-                </BaseButton>
+                />
             </BaseButtonSection>
         </BasePageBody>
     );

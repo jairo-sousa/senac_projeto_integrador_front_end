@@ -8,6 +8,7 @@ export function BaseHeader({ title, subtitle, children }) {
             mb={"2rem"}
             justify={"space-between"}
             px={"2rem"}
+            backgroundColor={"white"}
         >
             <Box>
                 <Text fontSize={"2.4rem"}>{title}</Text>

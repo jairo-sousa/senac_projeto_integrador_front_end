@@ -24,15 +24,21 @@ export const router = createBrowserRouter([
 
 export const links = [
     {
-        name: "Agenda",
+        name: "AGENDA",
         path: "/",
+        bg: "#ff7294",
+        color: "#f6dad9",
     },
     {
-        name: "Clientes",
+        name: "CLIENTES",
         path: "clients",
+        bg: "#f9c8c5",
+        color: "#ae4458",
     },
     {
-        name: "Serviços",
+        name: "SERVIÇOS",
         path: "services",
+        bg: "#ae4458",
+        color: "#ffffff",
     },
 ];

@@ -223,9 +223,7 @@ export function Clients() {
                         cleanInputs();
                         handleModalDisplay();
                     }}
-                >
-                    NOVO CLIENTE
-                </BaseButton>
+                />
             </BaseButtonSection>
         </BasePageBody>
     );

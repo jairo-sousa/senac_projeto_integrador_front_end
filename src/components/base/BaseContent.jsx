@@ -6,7 +6,7 @@ export function BaseContent({ children }) {
             direction={"column"}
             align={"Center"}
             w={"100%"}
-            bgColor={"var(--background-secondary)"}
+            bgColor={"var(--background-tertiary)"}
             borderRadius={"1rem"}
             padding={"2rem 0"}
         >

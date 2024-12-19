@@ -5,17 +5,18 @@ const newStyles = {
         fontSize: "62.5%",
 
         // CONTENT
-        "--content-primary": "#fff",
-        "--content-secondary": "#98959D",
-        "--content-tertiary": "#666666",
+        "--content-primary": "#ae4458",
+        "--content-secondary": "#eda8b5",
+        "--content-tertiary": "#ff7294",
+        "--content-quatertiary": "#f9c8c5",
         "--content-brand": "#9282FA",
         "--content-brand-contrast": "#050505",
         "--content-brand-shadow": "#9485fa4d",
 
         // BACKGROUND
-        "--background-primary": "#14151d",
-        "--background-secondary": "#23242C",
-        "--background-tertiary": "#2E2C30",
+        "--background-primary": "var(--content-primary)",
+        "--background-secondary": "var(--content-secondary)",
+        "--background-tertiary": "#ffffff",
         "--background-quaternary": "#1f2223",
 
         // BORDER
@@ -27,11 +28,12 @@ const newStyles = {
         padding: 0,
         boxSizing: "border-box",
         fontSize: "1.6rem",
+        fontFamily: "Quicksand",
     },
 
     body: {
         height: "100vh",
-        backgroundColor: "var(--background-primary)",
+        backgroundImage: `url("/src/assets/background.svg")`,
         color: "var(--content-primary)",
         fontWeight: "bold",
     },

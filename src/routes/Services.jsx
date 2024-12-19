@@ -228,9 +228,7 @@ export function Services() {
                         cleanInputs();
                         handleModalDisplay();
                     }}
-                >
-                    NOVO SERVIÇO
-                </BaseButton>
+                />
             </BaseButtonSection>
         </BasePageBody>
     );

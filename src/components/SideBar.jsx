@@ -1,23 +1,31 @@
-import { Flex, Box, Span } from "@chakra-ui/react";
+import { Flex, Box, Text } from "@chakra-ui/react";
 import { links } from "../router";
+import { Logo } from "./Logo";
 
 export function SideBar() {
     return (
         <SideBarBody>
             <Logo />
 
-            <Divider />
-
             <LinksUl>
                 {links.map((link) => (
                     <LiLink
                         key={`${link.name} - ${links.indexOf(link.name)}`}
                         path={link.path}
+                        bg={link.bg}
+                        color={link.color}
                     >
-                        {link.name}
+                        <Text fontSize={"2rem"}>{link.name}</Text>
                     </LiLink>
                 ))}
             </LinksUl>
+
+            <Box
+                backgroundColor={"var(--background-primary)"}
+                w={"100%"}
+                flex={0.5}
+                borderRadius={"1rem 1rem 0 0"}
+            />
         </SideBarBody>
     );
 }
@@ -25,15 +33,21 @@ export function SideBar() {
 function SideBarBody({ children }) {
     return (
         <Flex
-            direction={"column"}
-            align={"center"}
-            minW={"18.3rem"}
-            backgroundColor={"var(--background-tertiary)"}
+            justifyContent={"center"}
+            minW={"37rem"}
             h={"100%"}
-            p={"1.2rem 2rem"}
-            gap={"1.5rem"}
+            backgroundColor={"var(--background-tertiary)"}
         >
-            {children}
+            <Flex
+                direction={"column"}
+                alignItems={"center"}
+                justifyContent={"start"}
+                h={"100%"}
+                w={"27rem"}
+                gap={"2rem"}
+            >
+                {children}
+            </Flex>
         </Flex>
     );
 }
@@ -44,28 +58,30 @@ function Divider() {
     );
 }
 
-function Logo() {
-    return (
-        <Box color={"var(--content-brand)"}>
-            <Span>MINHA MANICURE</Span>
-        </Box>
-    );
-}
-
 function LinksUl({ children }) {
     return (
-        <Flex as={"ul"} w={"100%"} gap={"2.4rem"} direction={"column"}>
+        <Flex as={"ul"} w={"100%"} gap={"2rem"} direction={"column"}>
             {children}
         </Flex>
     );
 }
 
-function LiLink({ children, path }) {
+function LiLink({ bg, color, children, path }) {
     return (
-        <Box as={"li"} w={"100%"}>
-            <Box as={"a"} href={path}>
+        <Box as={"li"} w={"100%"} h={"6rem"}>
+            <Flex
+                align={"center"}
+                justify={"center"}
+                as={"a"}
+                h={"100%"}
+                href={path}
+                textAlign={"center"}
+                bgColor={bg}
+                color={color}
+                borderRadius={"1rem"}
+            >
                 {children}
-            </Box>
+            </Flex>
         </Box>
     );
 }
