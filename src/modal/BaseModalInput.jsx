@@ -9,8 +9,9 @@ export const BaseModalInput = forwardRef(
                 direction={"column"}
                 gap={"0.8rem"}
                 w={"100%"}
+                fontSize={"2rem"}
             >
-                <Box as={"label"} fontWeight={500}>
+                <Box as={"label"} fontWeight={600}>
                     {name}
                 </Box>
                 {customType === "select" ? (
@@ -26,7 +27,7 @@ export const BaseModalInput = forwardRef(
                         border={"1px solid var(--content-brand-shadow)"}
                         color={"var(--content-secondary)"}
                         bgColor={"inherit"}
-                        fontWeight={400}
+                        fontWeight={500}
                         onChange={onchangeCalback}
                     >
                         {children}

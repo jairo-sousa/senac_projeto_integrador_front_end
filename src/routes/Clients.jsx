@@ -166,7 +166,9 @@ export function Clients() {
                             <BaseTableCell>Rua</BaseTableCell>
                             <BaseTableCell>Bairro</BaseTableCell>
                             <BaseTableCell>Cidade</BaseTableCell>
-                            <BaseTableCell>Estado</BaseTableCell>
+                            <BaseTableCell customWidth={"8rem"}>
+                                Estado
+                            </BaseTableCell>
                             <BaseTableCell isLastChild={true} toGrown={true}>
                                 Ações
                             </BaseTableCell>

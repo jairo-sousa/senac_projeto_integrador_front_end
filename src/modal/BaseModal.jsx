@@ -163,12 +163,12 @@ function BaseModalButton({ isModalAction, onClickCallBack, children }) {
         <Button
             w={"fit-content"}
             h={"4.406rem"}
-            bgColor={isModalAction ? "var(--content-brand)" : "#2e3334"}
-            color={
+            bgColor={
                 isModalAction
-                    ? "var(--content-brand-contrast)"
+                    ? "var(--content-tertiary)"
                     : "var(--content-primary)"
             }
+            color={"var(--background-tertiary)"}
             fontWeight={"bold"}
             fontSize={"1.55rem"}
             borderRadius={"0.8rem"}
