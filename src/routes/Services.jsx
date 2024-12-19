@@ -206,7 +206,7 @@ export function Services() {
             <BaseButtonSection>
                 <BaseModal
                     isOpen={isModalOpen}
-                    title={"Novo Serviço"}
+                    title={updatingService ? "Editar Serviço" : "Novo Serviço"}
                     handleDisplayCallback={handleModalDisplay}
                     handleSaveCallback={handleSave}
                     inputRefs={inputRefs}
@@ -225,6 +225,7 @@ export function Services() {
 
                 <BaseButton
                     parentOnclickCalback={() => {
+                        setUpdatingService(null);
                         cleanInputs();
                         handleModalDisplay();
                     }}

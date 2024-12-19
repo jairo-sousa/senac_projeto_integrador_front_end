@@ -204,7 +204,7 @@ export function Clients() {
             <BaseButtonSection>
                 <BaseModal
                     isOpen={isModalOpen}
-                    title={"Novo Cliente"}
+                    title={updatingClient ? "Editar Cliente" : "Novo Cliente"}
                     handleDisplayCallback={handleModalDisplay}
                     handleSaveCallback={handleSave}
                     inputRefs={inputRefs}
@@ -222,6 +222,7 @@ export function Clients() {
                 </BaseModal>
                 <BaseButton
                     parentOnclickCalback={() => {
+                        setUpdatingClient(null);
                         cleanInputs();
                         handleModalDisplay();
                     }}

@@ -304,7 +304,11 @@ export function Home() {
             <BaseButtonSection>
                 <BaseModal
                     isOpen={isModalOpen}
-                    title={"Novo Agendamento"}
+                    title={
+                        updatingScheduling
+                            ? "Editar Agendamento"
+                            : "Novo Agendamento"
+                    }
                     handleDisplayCallback={handleModalDisplay}
                     handleSaveCallback={handleSave}
                     inputRefs={inputRefs}
@@ -424,6 +428,7 @@ export function Home() {
                         cleanInputs();
                         getClients();
                         getServices();
+                        setUpdatingScheduling(null);
                         handleModalDisplay();
                     }}
                 />
