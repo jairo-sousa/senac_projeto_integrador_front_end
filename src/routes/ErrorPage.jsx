@@ -16,7 +16,7 @@ export function ErrorPage() {
             backgroundSize={"cover"}
             backgroundRepeat={"no-repeat"}
         >
-            <Flex direction={"column"} align={"center"}>
+            <Flex direction={"column"} align={"center"} color={"white"}>
                 <Text fontSize={"7.2rem"} fontWeight={"700"}>
                     Oops!
                 </Text>
